@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		分类：
+		<div v-for="item in food" @click="activeType=item.type" :style="{color:item.type==activeType?'red':''}">{{item.type}}</div>
+		食物：
+		<ul>
+			<li v-for="v in newfood[0].content">
+				<span @click="reduce(v.id)" v-if="v.count>0">-</span>名称：{{v.name}} 价格：{{v.price}} 数量：{{v.count}} <span @click="add(v.id)">+</span>
+			</li>
+		</ul>
+	</div>
+	<script>
+		let app=new Vue({
+			el:'#app',
+			data:{
+				food:[
+                    {
+                    	type:'wine',
+                        content:[
+                            {id:1,name:'杏花村',price:10,count:5},
+                            {id:2,name:'汾酒',price:20,count:6},
+                            {id:3,name:'劲酒',price:30,count:7},
+                            {id:4,name:'茅台',price:40,count:8},
+                            {id:5,name:'葡萄酒',price:50,count:9},
+                        ]
+                    },
+                    {
+                        type:'snack',
+                        content:[
+                            {id:1,name:'薯片',price:5,count:5},
+                            {id:2,name:'爆米花',price:3,count:6},
+                            {id:3,name:'辣条',price:4,count:7},
+                            {id:4,name:'东鹏特饮',price:10,count:8},
+                            {id:5,name:'可口可乐',price:5,count:9},
+                        ]
+                    }
+				],
+				activeType:'wine'
+			},
+            computed:{
+            	newfood(type){
+            		let newfood=this.food.filter(element=>element.type=this.activeType);
+            		return newfood;
+            	}
+            },
+            methods:{
+            	add(id){
+                    let foods=this.food.filter(element=>element.type=this.activeType);
+                    for(let i=0;i<foods[0].content.length;i++){
+                    	if(foods[0].content[i].id==id){
+                    		foods[0].content[i].count++;
+                    	}
+                    }
+            	},
+                reduce(id){
+                    let foods=this.food.filter(element=>element.type=this.activeType);
+                    for(let i=0;i<foods[0].content.length;i++){
+                    	if(foods[0].content[i].id==id){
+                    		foods[0].content[i].count--;
+                    	}
+                    }
+            	}
+            }
+		})
+	</script>
+</body>
+</html>
